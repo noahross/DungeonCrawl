@@ -35,9 +35,9 @@ class Exit {
             console.log(`${capitalizeFirstLetter(this.name)} is locked.`);
         }
         if (!this.isLocked) {
-            let newState = 'open';
+            let newState = "open";
             if (this.isOpen) {
-                newState = 'closed';
+                newState = "closed";
             }
             this.isOpen = !this.isOpen;
             console.log(`The ${this.name} is now ${newState}.`);
@@ -92,37 +92,37 @@ class Character {
 }
 class Kobold extends Character {
     constructor() {
-        super('kobold', 'kobold', 8);
+        super("kobold", "kobold", 8);
     }
 }
 exports.Kobold = Kobold;
 class Goblin extends Character {
     constructor() {
-        super('goblin', 'goblin', 16);
+        super("goblin", "goblin", 16);
     }
 }
 exports.Goblin = Goblin;
 class Hobgoblin extends Character {
     constructor() {
-        super('hobgoblin', 'hobgoblin', 32);
+        super("hobgoblin", "hobgoblin", 32);
     }
 }
 exports.Hobgoblin = Hobgoblin;
 class Door extends Exit {
     constructor() {
-        super('door', false, false, 0);
+        super("door", false, false, 0);
     }
 }
 exports.Door = Door;
 class LockedDoor extends Exit {
     constructor() {
-        super('locked door', false, true, 10);
+        super("locked door", false, true, 10);
     }
 }
 exports.LockedDoor = LockedDoor;
 class IronDoor extends Exit {
     constructor() {
-        super('iron door', false, true, 20);
+        super("iron door", false, true, 20);
     }
 }
 exports.IronDoor = IronDoor;
@@ -142,10 +142,10 @@ class Caster extends Character {
         }
     }
     logSpells() {
-        let spellString = 'Available spells';
+        let spellString = "Available spells";
         let index = 0;
-        this.spellList.forEach(spell => {
-            spellString += ' - ' + index + '. ' + spell.name;
+        this.spellList.forEach((spell) => {
+            spellString += " - " + index + ". " + spell.name;
             index++;
         });
         console.log(spellString);

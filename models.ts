@@ -1,6 +1,6 @@
-import {Dice} from "./dice";
-import {roll} from "./dice";
-import {getRandomNumber} from "./dice";
+import { Dice } from "./dice";
+import { roll } from "./dice";
+import { getRandomNumber } from "./dice";
 
 export function wait() {
     let ms: number = 1000;
@@ -15,11 +15,15 @@ export function capitalizeFirstLetter(string: string): string {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-export interface Interactable {
+export interface Nameable {
+    name: string;
+}
+
+export interface Interactable extends Nameable {
     interact(): void;
 }
 
-export interface Openable extends Interactable{
+export interface Openable extends Interactable {
     isOpen: boolean;
     isLocked: boolean;
 
@@ -36,7 +40,7 @@ export class Room {
     }
 }
 
-abstract class Exit implements Openable, Attackable{
+abstract class Exit implements Openable, Attackable {
     name: string;
     isOpen: boolean;
     isLocked: boolean;
@@ -50,13 +54,13 @@ abstract class Exit implements Openable, Attackable{
     }
 
     interact(): void {
-        if(!this.isOpen && this.isLocked) {
+        if (!this.isOpen && this.isLocked) {
             console.log(`${capitalizeFirstLetter(this.name)} is locked.`);
         }
-        if(!this.isLocked) {
-            let newState: string = 'open';
-            if(this.isOpen) {
-                newState = 'closed';
+        if (!this.isLocked) {
+            let newState: string = "open";
+            if (this.isOpen) {
+                newState = "closed";
             }
             this.isOpen = !this.isOpen;
             console.log(`The ${this.name} is now ${newState}.`);
@@ -80,7 +84,7 @@ export enum Ability {
     CON,
     INT,
     WIS,
-    CHA
+    CHA,
 }
 
 export interface Duration {
@@ -99,7 +103,7 @@ export interface Damage {
     type: string;
 }
 
-export interface Actionable {
+export interface Actionable extends Nameable {
     target: string;
     range: number;
     duration?: Duration;
@@ -115,14 +119,7 @@ export class Spell implements Actionable {
     effect?: Effect;
     damage?: Damage;
 
-    constructor(
-        name: string,
-        target: string,
-        range: number,
-        duration?: Duration,
-        effect?: Effect,
-        damage?: Damage
-    ) {
+    constructor(name: string, target: string, range: number, duration?: Duration, effect?: Effect, damage?: Damage) {
         this.name = name;
         this.target = target;
         this.range = range;
@@ -132,12 +129,11 @@ export class Spell implements Actionable {
     }
 }
 
-export interface CharacterClass {
-    name: string;
+export interface CharacterClass extends Nameable{
     hitDie: number;
 }
 
-export interface Attackable {
+export interface Attackable extends Nameable {
     name: string;
     hitPoints: number;
 
@@ -177,37 +173,37 @@ abstract class Character implements Attackable {
 
 export class Kobold extends Character {
     constructor() {
-        super('kobold', 'kobold', 8);
+        super("kobold", "kobold", 8);
     }
 }
 
 export class Goblin extends Character {
     constructor() {
-        super('goblin', 'goblin', 16);
+        super("goblin", "goblin", 16);
     }
 }
 
 export class Hobgoblin extends Character {
     constructor() {
-        super('hobgoblin', 'hobgoblin', 32);
+        super("hobgoblin", "hobgoblin", 32);
     }
 }
 
 export class Door extends Exit {
     constructor() {
-        super('door', false, false, 0);
+        super("door", false, false, 0);
     }
 }
 
 export class LockedDoor extends Exit {
     constructor() {
-        super('locked door', false, true, 10);
+        super("locked door", false, true, 10);
     }
 }
 
 export class IronDoor extends Exit {
     constructor() {
-        super('iron door', false, true, 20);
+        super("iron door", false, true, 20);
     }
 }
 
@@ -244,10 +240,10 @@ export class Caster extends Character {
     }
 
     logSpells() {
-        let spellString: string = 'Available spells';
+        let spellString: string = "Available spells";
         let index: number = 0;
-        this.spellList.forEach(spell => {
-            spellString += ' - ' + index + '. ' + spell.name;
+        this.spellList.forEach((spell) => {
+            spellString += " - " + index + ". " + spell.name;
             index++;
         });
         console.log(spellString);
@@ -277,13 +273,13 @@ function getRoom(): Room {
 }
 
 function getRandomDoor(): Exit | undefined {
-    let randomNumber: number = getRandomNumber(0,3);
+    let randomNumber: number = getRandomNumber(0, 3);
 
-    if(randomNumber === 1) {
+    if (randomNumber === 1) {
         return new Door();
-    } else if(randomNumber === 2) {
+    } else if (randomNumber === 2) {
         return new LockedDoor();
-    } else if(randomNumber === 3) {
+    } else if (randomNumber === 3) {
         return new IronDoor();
     } else {
         return undefined;
@@ -291,11 +287,11 @@ function getRandomDoor(): Exit | undefined {
 }
 
 function getRandomEnemy(): Character {
-    let randomNumber: number = getRandomNumber(1,3);
+    let randomNumber: number = getRandomNumber(1, 3);
 
-    if(randomNumber === 1) {
+    if (randomNumber === 1) {
         return new Kobold();
-    } else if(randomNumber === 2) {
+    } else if (randomNumber === 2) {
         return new Goblin();
     } else {
         return new Hobgoblin();
